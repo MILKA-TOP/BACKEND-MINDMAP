@@ -16,7 +16,6 @@ import org.jetbrains.exposed.sql.selectAll
 
 fun selectMapsStampedAnswersStatement(
     mapId: Int,
-    userId: Int,
 ): List<AnswersDTO> = (MapFetchTime
     .innerJoin(Maps)
     .innerJoin(Nodes)

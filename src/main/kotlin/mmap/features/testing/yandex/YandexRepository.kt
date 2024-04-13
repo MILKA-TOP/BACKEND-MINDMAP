@@ -36,11 +36,13 @@ class YandexRepository {
     }
 
     @Serializable
+    @Suppress("ConstructorParameterNaming")
     private class Yandex300Request(
         val article_url: String,
     )
 
     @Serializable(with = Yandex300ResponseSerializer::class)
+    @Suppress("ConstructorParameterNaming")
     sealed class Yandex300Response {
         open val status: YandexResponseStatus = YandexResponseStatus.error
 
@@ -76,5 +78,4 @@ class YandexRepository {
             }
         }
     }
-
 }

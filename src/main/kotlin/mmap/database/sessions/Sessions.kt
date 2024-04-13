@@ -99,5 +99,4 @@ object Sessions : UUIDTable(columnName = "session_id") {
             it[isActive] = false
         }
     }
-
 }

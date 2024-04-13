@@ -37,5 +37,4 @@ class CatalogController(private val call: ApplicationCall) {
             isPrivate = map.passwordHash != null,
         )
     }
-
 }

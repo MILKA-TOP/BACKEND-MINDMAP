@@ -4,7 +4,7 @@ class UserAuthFetchDTO(
     override val id: Int,
     override val email: String,
     val password: String,
-): UsersFetchDTO(
+) : UsersFetchDTO(
     id = id,
     email = email
 )

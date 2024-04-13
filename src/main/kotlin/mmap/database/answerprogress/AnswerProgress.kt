@@ -2,7 +2,6 @@ package mmap.database.answerprogress
 
 import mmap.database.answers.Answers
 import mmap.database.mapfetchtime.MapFetchTime
-import mmap.database.nodes.Nodes
 import mmap.database.nodes.Nodes.default
 import mmap.database.users.Users
 import org.jetbrains.exposed.sql.Table
@@ -23,5 +22,4 @@ object AnswerProgress : Table() {
             this[fetchId] = answer.fetchId
         }
     }
-
 }

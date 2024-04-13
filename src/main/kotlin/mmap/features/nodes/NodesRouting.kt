@@ -15,5 +15,4 @@ fun Application.configureNodesRouting() {
             nodesModifyController.toggleSelection(userId, nodeId)
         }
     }
-
 }

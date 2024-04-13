@@ -1,6 +1,5 @@
 package mmap.database.questionsevents
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import mmap.database.questions.QuestionType
 
@@ -20,5 +19,4 @@ sealed class QuestionEventJson {
         val text: String,
         val type: QuestionType,
     ) : QuestionEventJson()
-
 }

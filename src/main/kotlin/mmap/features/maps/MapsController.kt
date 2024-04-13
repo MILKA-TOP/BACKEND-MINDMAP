@@ -134,10 +134,8 @@ class MapsController(private val call: ApplicationCall) {
             answers = UpdateRowDTO(),
         )
 
-
         call.respond(HttpStatusCode.OK, MapIdResponseRemote(mapId = cratedMapId.toString()))
     }
-
 
     suspend fun addNewMap(userId: String) {
         val userIdInt = userId.toInt()
@@ -186,7 +184,6 @@ class MapsController(private val call: ApplicationCall) {
         }
     }
 
-
     private fun fetchEditMap(
         mapIdInt: Int,
         map: SelectedMapDTO,
@@ -216,7 +213,6 @@ class MapsController(private val call: ApplicationCall) {
             accessUsers = dto.accessUsers.filter { it.id != map.admin.id }.map { it.toDomainModel() },
         )
     }
-
 
     private fun fetchViewMap(
         mapIdInt: Int,
@@ -292,10 +288,8 @@ class MapsController(private val call: ApplicationCall) {
     private fun generateMapsReferralId(adminId: Int, title: String) =
         "$adminId-$title-${LocalTime.now()}".md5().slice(0 until REFERRAL_ID_SIZE)
 
-
     companion object {
         const val PASSWORD_MIN_SIZE = 8
         const val REFERRAL_ID_SIZE = 8
     }
-
 }

@@ -1,7 +1,5 @@
 package mmap.database.extensions
 
-import mmap.database.answerprogress.AnswerProgress
-import mmap.database.answers.Answers
 import mmap.database.mapfetchtime.MapFetchTime
 import mmap.database.maps.Maps
 import mmap.database.nodes.Nodes
@@ -18,7 +16,6 @@ import org.jetbrains.exposed.sql.selectAll
 
 fun selectMapsStampedQuestionsStatement(
     mapId: Int,
-    userId: Int,
 ): List<QuestionsDTO> = (MapFetchTime
     .innerJoin(Maps)
     .innerJoin(Nodes)

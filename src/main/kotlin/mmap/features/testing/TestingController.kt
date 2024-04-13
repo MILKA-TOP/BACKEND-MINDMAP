@@ -44,7 +44,6 @@ class TestingController(private val call: ApplicationCall) {
                 val stampedQuestionsIds = stampedTest.stampedQuestions.map { it.id }
                 val stampedAnswersIds = stampedTest.stampedAnswers.map { it.id }
 
-
                 val receivedQuestionsIds = usersTestAnswers.questions.map { UUID.fromString(it.questionId) }
                 val receivedSelectedAnswersIds =
                     usersTestAnswers.questions.flatMap { it.answers }.map { UUID.fromString(it.answerId) }
@@ -105,7 +104,7 @@ class TestingController(private val call: ApplicationCall) {
             description?.let {
                 nodeDescriptionResult = nodeDescriptionResult.replace(
                     oldValue = link.value,
-                    newValue = "${link.value} ${it}"
+                    newValue = "${link.value} $it"
                 )
             }
         }
@@ -136,5 +135,4 @@ class TestingController(private val call: ApplicationCall) {
 
         call.respond(HttpStatusCode.OK, testModels)
     }
-
 }

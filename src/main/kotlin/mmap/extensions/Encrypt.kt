@@ -11,4 +11,3 @@ fun String.md5() = MessageDigest
     .getInstance("MD5")
     .digest(this.toByteArray())
     .fold("") { str, it -> str + "%02x".format(it) }
-

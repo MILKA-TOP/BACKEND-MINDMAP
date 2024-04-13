@@ -60,6 +60,7 @@ class OpexamsRepository {
         )
     }
 
+    @Suppress("EnumNaming", "EnumEntryNameCase")
     enum class OpexamsRequestType {
         contextBased, topicBased
     }
@@ -88,4 +89,3 @@ class OpexamsRepository {
         val options: List<String>
     )
 }
-

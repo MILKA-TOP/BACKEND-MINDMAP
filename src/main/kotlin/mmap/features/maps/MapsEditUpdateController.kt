@@ -92,7 +92,6 @@ class MapsEditUpdateController(private val call: ApplicationCall) {
 
             // :TODO require, that parentNodeId changed of removed node's children
 
-
             Maps.updateSummaryMap(
                 mapId = mapIdInt,
                 title = updatedMap.title,
@@ -365,7 +364,6 @@ class MapsEditUpdateController(private val call: ApplicationCall) {
 
     private fun <T> createUuidIds(list: List<T>, getId: (T) -> String): Map<String, UUID> =
         list.map(getId).associateWith { UUID.randomUUID() }
-
 
     private data class TestModel(
         val testId: UUID,

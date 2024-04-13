@@ -1,4 +1,4 @@
-package mmap.features.auth.login.models.request
+package mmap.domain.auth.models.request
 
 import kotlinx.serialization.Serializable
 

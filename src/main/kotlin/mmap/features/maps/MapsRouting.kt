@@ -5,7 +5,6 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import mmap.features.maps.models.request.MapRemoveType
-import mmap.features.maps.models.request.MapsCreateRequestParams
 import mmap.features.maps.models.request.MapsMigrateRequestParams
 import mmap.plugins.authenticateRouting
 

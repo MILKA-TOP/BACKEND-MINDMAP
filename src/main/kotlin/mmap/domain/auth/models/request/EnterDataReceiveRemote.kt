@@ -1,10 +1,9 @@
-package mmap.features.auth.registry
+package mmap.domain.auth.models.request
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RegistryReceiveRemote(
+data class EnterDataReceiveRemote(
     val email: String,
     val password: String
 )
-

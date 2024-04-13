@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo "Running pre -commit checks..."
+
+OUTPUT="/tmp/res"
+./gradlew detektAutoCorrect > ${OUTPUT}
+EXIT_CODE=$?
+if [ ${EXIT_CODE} -ne 0 ]; then
+    tail -20 ${OUTPUT}
+    rm ${OUTPUT}
+    echo "Pre Commit Checks Failed. Please fix the above issues before committing"
+    exit ${EXIT_CODE}
+else
+    rm ${OUTPUT}
+    echo "Pre Commit Checks Passed -- no problems found"
+fi

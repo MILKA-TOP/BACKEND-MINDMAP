@@ -13,5 +13,4 @@ object Questions : UUIDTable(columnName = "question_id") {
             this[testId] = question.testId
         }
     }
-
 }

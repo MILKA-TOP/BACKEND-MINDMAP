@@ -4,8 +4,8 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import mmap.features.auth.login.POST_REQUEST_CREATE_TOKEN
-import mmap.features.auth.sessions.SessionController
+import mmap.features.user.POST_REQUEST_CREATE_TOKEN
+import mmap.features.user.UserController
 
 fun Application.configureAuthentication() {
     install(Authentication) {
@@ -14,9 +14,9 @@ fun Application.configureAuthentication() {
             authenticate { tokenCredential ->
                 val userId = when {
                     this.request.uri.contains(POST_REQUEST_CREATE_TOKEN) ->
-                        SessionController.getTemporaryUserIdByToken(tokenCredential)
+                        UserController.getTemporaryUserIdByToken(tokenCredential)
 
-                    else -> SessionController.getActiveUserIdByToken(tokenCredential)
+                    else -> UserController.getActiveUserIdByToken(tokenCredential)
                 }
                 if (userId != null) {
                     UserIdPrincipal(userId.toString())
@@ -33,7 +33,3 @@ fun Application.authenticateRouting(build: Route.() -> Unit) = routing {
         build()
     }
 }
-
-private val TemporaryBearerRequests: List<String> = listOf(
-    POST_REQUEST_CREATE_TOKEN,
-)

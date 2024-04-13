@@ -117,6 +117,4 @@ object SelectedMaps : Table() {
         update(where = { (SelectedMaps.mapId eq mapId) and (SelectedMaps.userId eq userId) }) {
             it[isRemoved] = true
         }
-
-
 }

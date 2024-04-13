@@ -43,5 +43,4 @@ object QuestionSnapshot : Table() {
             }
         }
     }
-
 }
