@@ -1,4 +1,4 @@
-package mmap.features.nodes.models.response
+package mmap.domain.nodes.models.response
 
 import kotlinx.serialization.Serializable
 

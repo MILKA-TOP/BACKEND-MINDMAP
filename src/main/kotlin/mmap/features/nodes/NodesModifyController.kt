@@ -1,30 +1,26 @@
 package mmap.features.nodes
 
 import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import mmap.database.nodeprogress.NodeProgress
-import mmap.database.selectedmaps.SelectedMaps
-import mmap.features.nodes.models.response.NodeToggleResponseRemote
+import mmap.core.ApiResponse
+import mmap.domain.nodes.NodesRepository
+import mmap.domain.nodes.models.response.NodeToggleResponseRemote
 import java.util.*
 
-class NodesModifyController(private val call: ApplicationCall) {
-    suspend fun toggleSelection(userId: String, nodeId: String) {
-        val userIdInt = userId.toInt()
-        val nodeIdUuid = UUID.fromString(nodeId)
+class NodesModifyController(private val nodesRepository: NodesRepository) {
+    fun toggleSelection(userId: Int, nodeId: UUID): ApiResponse<NodeToggleResponseRemote> {
+        val isNodeEnabled = nodesRepository.isEnabledInteractForUserByNodeId(nodeId, userId)
+        if (!isNodeEnabled) return ApiResponse(
+            HttpStatusCode.Conflict,
+            errorMessage = "You doesn't have access for this node and map"
+        )
 
-        val isNodeEnabled = SelectedMaps.isEnabledInteractForUserByNodeId(nodeIdUuid, userIdInt)
+        val toggleResult: Boolean = nodesRepository.toggleNode(nodeId, userId)
 
-        if (isNodeEnabled) {
-            val toggleResult: Boolean = NodeProgress.toggleNode(nodeIdUuid, userIdInt)
-            call.respond(
-                HttpStatusCode.OK, NodeToggleResponseRemote(
-                    nodeId = nodeId,
-                    isMarked = toggleResult
-                )
+        return ApiResponse(
+            data = NodeToggleResponseRemote(
+                nodeId = nodeId.toString(),
+                isMarked = toggleResult
             )
-        } else {
-            call.respond(HttpStatusCode.Conflict, "You doesn't have access for this node and map")
-        }
+        )
     }
 }
