@@ -1,4 +1,4 @@
-package mmap.features.testing.tests.models
+package mmap.domain.tests.models.opexams
 
 import mmap.database.answers.AnswersDTO
 import mmap.database.questions.QuestionsDTO

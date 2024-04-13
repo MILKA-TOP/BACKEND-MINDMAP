@@ -3,6 +3,7 @@ package mmap.domain.di
 import mmap.domain.auth.di.domainAuthModule
 import mmap.domain.catalog.di.domainCatalogModule
 import mmap.domain.nodes.di.domainNodesModule
+import mmap.domain.tests.di.domainTestsModule
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -10,5 +11,6 @@ val domainModule = module {
         domainAuthModule,
         domainCatalogModule,
         domainNodesModule,
+        domainTestsModule,
     )
 }

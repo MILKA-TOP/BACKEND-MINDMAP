@@ -41,7 +41,7 @@ class UserController(
 
     fun connectUser(userId: Int, deviceId: String, token: String): SessionDTO {
         authRepository.disableSessions(userId)
-        return authRepository.activateSession(userId, deviceId, token)
+        return authRepository.activateSession(userId, deviceId, token.salt())
     }
 
     fun tryRevokeDevice(userId: Int, deviceId: String) {

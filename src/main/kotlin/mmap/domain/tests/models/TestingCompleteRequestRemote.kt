@@ -1,4 +1,4 @@
-package mmap.features.testing.models.request
+package mmap.domain.tests.models
 
 import kotlinx.serialization.Serializable
 

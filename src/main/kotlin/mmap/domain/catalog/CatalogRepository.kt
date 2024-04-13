@@ -30,5 +30,4 @@ class CatalogRepository(
             isPrivate = map.passwordHash != null,
         )
     }
-
 }

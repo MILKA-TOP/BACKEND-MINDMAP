@@ -1,13 +1,13 @@
 package mmap.domain.auth.di
 
-import mmap.domain.nodes.NodesRepository
+import mmap.domain.auth.AuthRepository
 import org.koin.dsl.module
 
 val domainAuthModule = module {
     factory {
-        NodesRepository(
-            mapsDataSource = get(),
-            nodesRepository = get()
+        AuthRepository(
+            sessionDataSource = get(),
+            usersDataSource = get()
         )
     }
 }
