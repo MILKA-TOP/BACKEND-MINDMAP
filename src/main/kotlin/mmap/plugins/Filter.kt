@@ -16,4 +16,3 @@ val RequestHeaderFilterPlugin = createApplicationPlugin(name = "RequestHeaderFil
 fun Application.configureFilter() {
     install(RequestHeaderFilterPlugin)
 }
-

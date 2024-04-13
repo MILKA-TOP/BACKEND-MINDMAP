@@ -4,14 +4,16 @@ import io.github.cdimascio.dotenv.dotenv
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import mmap.features.auth.login.configureLoginRouting
-import mmap.features.auth.registry.configureRegistryRouting
+import mmap.di.appModule
 import mmap.features.catalog.configureCatalogRouting
 import mmap.features.maps.configureMapsRouting
 import mmap.features.nodes.configureNodesRouting
 import mmap.features.testing.configureTestingRouting
+import mmap.features.user.configureUserRouting
 import mmap.plugins.*
 import org.jetbrains.exposed.sql.Database
+import org.koin.ktor.plugin.Koin
+import org.koin.logger.slf4jLogger
 
 fun main() {
     val dotenv = dotenv()
@@ -32,14 +34,17 @@ fun main() {
 }
 
 fun Application.module() {
+    install(Koin) {
+        slf4jLogger()
+        modules(appModule)
+    }
     configureHTTP()
     configureSerialization()
     configureRouting()
     configureFilter()
     configureAuthentication()
     // Custom routes
-    configureLoginRouting()
-    configureRegistryRouting()
+    configureUserRouting()
     configureCatalogRouting()
     configureMapsRouting()
     configureNodesRouting()

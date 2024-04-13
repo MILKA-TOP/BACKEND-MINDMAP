@@ -15,4 +15,3 @@ fun <T : Enum<T>> Table.defaultCustomEnumeration(name: String, sql: String, enum
         sql = sql,
         enumClassCast
     ) { PGEnum(sql, it) }
-

@@ -14,6 +14,6 @@ fun Request.sessionId(): String? {
     }
 }
 
-val ApplicationRequest.deviceId: String? get() = headers[HttpHeaders.DeviceId]?.toString()
+val ApplicationRequest.deviceId: String get() = headers[HttpHeaders.DeviceId].orEmpty().trim()
 
 val HttpHeaders.DeviceId: String get() = "X-Device-Id"

@@ -26,5 +26,4 @@ object NodeProgress : Table() {
             .single()
             .let { it[isMarked] }
     }
-
 }

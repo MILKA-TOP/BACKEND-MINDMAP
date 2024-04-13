@@ -16,7 +16,6 @@ object Users : IntIdTable(columnName = "user_id") {
         }.resultedValues?.single()?.get(Users.id)?.value!!
     }
 
-
     fun fetchUser(email: String): UserAuthFetchDTO? {
         return try {
             transaction {

@@ -27,5 +27,4 @@ class NodesModifyController(private val call: ApplicationCall) {
             call.respond(HttpStatusCode.Conflict, "You doesn't have access for this node and map")
         }
     }
-
 }

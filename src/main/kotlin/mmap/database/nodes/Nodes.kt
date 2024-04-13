@@ -1,7 +1,7 @@
 package mmap.database.nodes
 
-import mmap.database.maps.Maps
 import mmap.database.extensions.UpdateRowDTO
+import mmap.database.maps.Maps
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.*
 import java.util.*
@@ -56,6 +56,4 @@ object Nodes : UUIDTable(columnName = "node_id") {
             it[isRemoved] = true
         }
     }
-
-
 }

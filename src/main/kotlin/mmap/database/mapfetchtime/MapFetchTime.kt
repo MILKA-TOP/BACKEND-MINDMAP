@@ -18,5 +18,4 @@ object MapFetchTime : UUIDTable(columnName = "fetch_id") {
             it[MapFetchTime.mapId] = mapId
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package mmap.database.extensions
 
-import mmap.database.answerprogress.AnswerProgress
 import mmap.database.answers.Answers
 import mmap.database.answers.AnswersDTO
 import mmap.database.answersevents.AnswerEventJson
@@ -13,7 +12,6 @@ import mmap.database.tests.Tests
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.booleanParam
 import org.jetbrains.exposed.sql.selectAll
 import java.util.*
 
@@ -50,4 +48,3 @@ fun selectTestsStampedAnswers(
             )
         }
     }.filterNotNull()
-

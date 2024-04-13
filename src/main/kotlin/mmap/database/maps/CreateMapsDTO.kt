@@ -1,6 +1,5 @@
 package mmap.database.maps
 
-
 data class CreateMapsDTO(
     val adminId: Int,
     val title: String,

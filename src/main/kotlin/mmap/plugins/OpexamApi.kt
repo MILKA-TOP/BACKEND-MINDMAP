@@ -7,7 +7,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 
-
 var opexamsClient: HttpClient? = null
 
 fun configureOpexamsApi(apiKey: String) {

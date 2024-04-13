@@ -1,6 +1,5 @@
 package mmap.database.extensions
 
-import mmap.database.answerprogress.AnswerProgress
 import mmap.database.mapfetchtime.MapFetchTime
 import mmap.database.maps.Maps
 import mmap.database.nodes.Nodes
@@ -11,7 +10,6 @@ import mmap.database.questionsevents.QuestionEvents
 import mmap.database.tests.Tests
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.booleanParam
 import org.jetbrains.exposed.sql.selectAll
 import java.util.*
 
@@ -47,4 +45,3 @@ fun selectTestsStampedQuestions(
             )
         }
     }.filterNotNull()
-

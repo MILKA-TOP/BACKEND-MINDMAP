@@ -7,7 +7,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 
-
 var yandex300Client: HttpClient? = null
 
 fun configureYandex300Api(apiKey: String) {

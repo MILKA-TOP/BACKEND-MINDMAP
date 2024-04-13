@@ -65,7 +65,6 @@ object Maps : IntIdTable(columnName = "map_id") {
         updateAnswersStatement(answers)
     }
 
-
     fun fetchEditSummary(mapId: Int): SummaryEditSelectMapDTO = transaction {
         val map = selectAll().where { Maps.id eq mapId }.single()
         val nodes = Nodes.selectActiveNodesStatement(mapId)
@@ -102,10 +101,9 @@ object Maps : IntIdTable(columnName = "map_id") {
         val questions = selectEditQuestionsStatement(mapId)
         val answers = selectEditAnswersStatement(mapId)
 
-
         val selectedAnswersIds = selectPickedAnswersIdsStatement(mapId, userId)
-        val stampedAnswers = selectMapsStampedAnswersStatement(mapId, userId)
-        val stampedQuestions = selectMapsStampedQuestionsStatement(mapId, userId)
+        val stampedAnswers = selectMapsStampedAnswersStatement(mapId)
+        val stampedQuestions = selectMapsStampedQuestionsStatement(mapId)
         val selectedNodesIds = selectPickedNodesIdsStatement(mapId, userId)
 
         val adminId = map[Maps.adminId]
