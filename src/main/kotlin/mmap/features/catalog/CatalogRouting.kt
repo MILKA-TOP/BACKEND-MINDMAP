@@ -1,18 +1,23 @@
 package mmap.features.catalog
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import mmap.plugins.authenticateRouting
+import org.koin.ktor.ext.inject
 
 fun Application.configureCatalogRouting() {
 
+    val catalogController by inject<CatalogController>()
+
     authenticateRouting {
         get("/catalog") {
-            val userId = call.principal<UserIdPrincipal>()?.name!!
+            val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
 
-            val catalogController = CatalogController(call)
-            catalogController.getAddedDiagrams(userId)
+            val maps = catalogController.getAddedDiagrams(userId)
+            call.respond(HttpStatusCode.OK, maps)
         }
     }
     authenticateRouting {
@@ -20,8 +25,8 @@ fun Application.configureCatalogRouting() {
             val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
             val query = call.parameters["query"]!!
 
-            val catalogController = CatalogController(call)
-            catalogController.searchMaps(userId, query)
+            val maps = catalogController.searchMaps(userId, query)
+            call.respond(HttpStatusCode.OK, maps)
         }
     }
 }
