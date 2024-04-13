@@ -1,4 +1,4 @@
-package mmap.features.maps.models.response
+package mmap.domain.maps.models.response
 
 import kotlinx.serialization.Serializable
 import mmap.database.answers.AnswersDTO
@@ -16,7 +16,7 @@ data class SummaryViewMapResponseRemote(
     val admin: UserResponseRemote,
     val nodes: List<NodesViewResponseRemote>,
     val type: MapActionType,
-)
+): SummaryMapResponseRemote
 
 @Serializable
 data class NodesViewResponseRemote(

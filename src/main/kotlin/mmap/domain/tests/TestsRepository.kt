@@ -14,11 +14,11 @@ import mmap.database.tests.TestsDTO
 import mmap.domain.tests.models.TestingCompleteRequestRemote
 import mmap.domain.tests.models.Yandex300Response
 import mmap.domain.tests.models.opexams.QuestionGeneratedModel
-import mmap.features.maps.models.response.AnswersEditResponseRemote.Companion.toEditDomainModel
-import mmap.features.maps.models.response.QuestionsEditResponseRemote.Companion.toEditDomainModel
-import mmap.features.maps.models.response.TestResultViewResponseRemote
-import mmap.features.maps.models.response.TestsEditResponseRemote
-import mmap.features.maps.models.response.TestsEditResponseRemote.Companion.toEditDomainModel
+import mmap.domain.maps.models.response.AnswersEditResponseRemote.Companion.toEditDomainModel
+import mmap.domain.maps.models.response.QuestionsEditResponseRemote.Companion.toEditDomainModel
+import mmap.domain.maps.models.response.TestResultViewResponseRemote
+import mmap.domain.maps.models.response.TestsEditResponseRemote
+import mmap.domain.maps.models.response.TestsEditResponseRemote.Companion.toEditDomainModel
 import org.jsoup.Jsoup
 import java.util.*
 

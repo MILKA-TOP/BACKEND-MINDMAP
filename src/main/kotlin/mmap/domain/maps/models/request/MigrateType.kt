@@ -1,4 +1,4 @@
-package mmap.features.maps.models.request
+package mmap.domain.maps.models.request
 
 enum class MigrateType {
     MINDOMO_TEXT

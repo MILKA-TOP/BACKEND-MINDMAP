@@ -1,4 +1,4 @@
-package mmap.features.maps.models.request
+package mmap.domain.maps.models.request
 
 import kotlinx.serialization.Serializable
 import mmap.database.questions.QuestionType

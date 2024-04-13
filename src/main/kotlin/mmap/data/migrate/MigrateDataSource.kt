@@ -1,12 +1,13 @@
-package mmap.features.maps
+package mmap.data.migrate
 
 import mmap.database.maps.SummaryEditSelectMapDTO
 import mmap.database.nodes.NodesDTO
 import mmap.database.users.UsersFetchDTO
-import mmap.features.maps.models.request.MigrateType
+import mmap.domain.maps.models.request.MigrateType
 import java.util.*
 
-class MapsRepository {
+class MigrateDataSource {
+
     fun migrateOtherMindMap(text: String, type: MigrateType): SummaryEditSelectMapDTO = when (type) {
         MigrateType.MINDOMO_TEXT -> importMindomoText(text)
     }
@@ -86,4 +87,5 @@ class MapsRepository {
     }
 
     private fun String.startCountWhitespaces(): Int = this.takeWhile { it.isWhitespace() }.length
+
 }

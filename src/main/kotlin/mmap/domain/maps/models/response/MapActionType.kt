@@ -1,4 +1,4 @@
-package mmap.features.maps.models.response
+package mmap.domain.maps.models.response
 
     enum class MapActionType {
         EDIT, INTERACT

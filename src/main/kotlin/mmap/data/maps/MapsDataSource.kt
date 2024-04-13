@@ -3,7 +3,9 @@ package mmap.data.maps
 import mmap.database.answers.AnswersDTO
 import mmap.database.extensions.UpdateRowDTO
 import mmap.database.extensions.selectFetchIdForTest
+import mmap.database.maps.CreateMapsDTO
 import mmap.database.maps.Maps
+import mmap.database.maps.SummaryViewSelectMapDTO
 import mmap.database.nodes.NodesDTO
 import mmap.database.questions.QuestionsDTO
 import mmap.database.selectedmaps.SelectedMapDTO
@@ -19,6 +21,9 @@ class MapsDataSource {
 
     fun isEnabledInteractForUserByTestId(testId: UUID, userId: Int) =
         SelectedMaps.isEnabledInteractForUserByNodeId(testId, userId)
+
+    fun isEnabledInteractForUserByMapId(mapId: Int, userId: Int) =
+        SelectedMaps.isEnabledInteractForUserByMapId(mapId, userId)
 
     fun selectMapFetchIdForTest(testId: UUID, userId: Int) = selectFetchIdForTest(testId, userId)
 
@@ -49,4 +54,40 @@ class MapsDataSource {
         questions = questions,
         answers = answers
     )
+
+    fun insertMap(createMapsDTO: CreateMapsDTO): Int = Maps.insert(createMapsDTO)
+
+    fun create(
+        createMapsDTO: CreateMapsDTO,
+        nodes: UpdateRowDTO<NodesDTO, UUID> = UpdateRowDTO(),
+        tests: UpdateRowDTO<TestsDTO, UUID> = UpdateRowDTO(),
+        questions: UpdateRowDTO<QuestionsDTO, UUID> = UpdateRowDTO(),
+        answers: UpdateRowDTO<AnswersDTO, UUID> = UpdateRowDTO(),
+    ): Int = Maps.create(
+        createMapsDTO = createMapsDTO,
+        nodes = nodes,
+        tests = tests,
+        questions = questions,
+        answers = answers,
+    )
+
+    fun selectNewMap(mapId: Int, userId: Int) {
+        SelectedMaps.insert(userId, mapId)
+    }
+
+    fun fetchViewSummary(mapIdInt: Int, userIdInt: Int, markAsFetchedForUser: Boolean): SummaryViewSelectMapDTO =
+        Maps.fetchViewSummary(mapIdInt, userIdInt, markAsFetchedForUser)
+
+    fun hideMap(userId: Int, mapId: Int) {
+        SelectedMaps.hideMap(userId, mapId)
+    }
+
+    fun deleteInteractedData(userId: Int, mapId: Int) {
+        SelectedMaps.deleteInteractedData(userId, mapId)
+    }
+
+    fun selectAdminId(mapId: Int): Int? = Maps.selectAdminId(mapId)
+    fun deleteEditableMap(mapId: Int) {
+        Maps.deleteEditableMap(mapId)
+    }
 }

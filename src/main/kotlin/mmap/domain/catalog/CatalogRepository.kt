@@ -3,7 +3,7 @@ package mmap.domain.catalog
 import mmap.data.maps.MapsDataSource
 import mmap.database.selectedmaps.SelectedMapDTO
 import mmap.domain.catalog.models.MapCatalogRemote
-import mmap.features.maps.models.response.UserResponseRemote.Companion.toDomainModel
+import mmap.domain.maps.models.response.UserResponseRemote.Companion.toDomainModel
 
 class CatalogRepository(
     private val mapsDataSource: MapsDataSource,

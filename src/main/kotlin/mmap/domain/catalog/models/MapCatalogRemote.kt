@@ -1,7 +1,7 @@
 package mmap.domain.catalog.models
 
 import kotlinx.serialization.Serializable
-import mmap.features.maps.models.response.UserResponseRemote
+import mmap.domain.maps.models.response.UserResponseRemote
 
 @Serializable
 data class MapCatalogRemote(

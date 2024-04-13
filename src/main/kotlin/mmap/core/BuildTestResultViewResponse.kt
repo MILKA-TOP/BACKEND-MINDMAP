@@ -2,9 +2,9 @@ package mmap.core
 
 import mmap.database.answers.AnswersDTO
 import mmap.database.questions.QuestionsDTO
-import mmap.features.maps.models.response.AnswersResultResponseRemote.Companion.toResultDomainModel
-import mmap.features.maps.models.response.QuestionsResultResponseRemote.Companion.toResultDomainModel
-import mmap.features.maps.models.response.TestResultViewResponseRemote
+import mmap.domain.maps.models.response.AnswersResultResponseRemote.Companion.toResultDomainModel
+import mmap.domain.maps.models.response.QuestionsResultResponseRemote.Companion.toResultDomainModel
+import mmap.domain.maps.models.response.TestResultViewResponseRemote
 import java.util.*
 
 fun buildTestResultViewResponse(

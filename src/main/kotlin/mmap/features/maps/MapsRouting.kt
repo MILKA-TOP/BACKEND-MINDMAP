@@ -4,18 +4,22 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import mmap.features.maps.models.request.MapRemoveType
-import mmap.features.maps.models.request.MapsMigrateRequestParams
+import mmap.core.ApiResponse.Companion.respond
+import mmap.domain.maps.models.request.*
 import mmap.plugins.authenticateRouting
+import org.koin.ktor.ext.inject
 
 fun Application.configureMapsRouting() {
 
+    val mapsController: MapsController by inject<MapsController>()
+    val mapsEditController: MapsEditUpdateController by inject<MapsEditUpdateController>()
+
     authenticateRouting {
         post("/maps/create") {
-            val userId = call.principal<UserIdPrincipal>()?.name!!
+            val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
+            val createParams = call.receive<MapsCreateRequestParams>()
 
-            val catalogController = MapsController(call)
-            catalogController.createNewMap(userId)
+            mapsController.createNewMap(userId, createParams)
         }
     }
     authenticateRouting {
@@ -23,44 +27,45 @@ fun Application.configureMapsRouting() {
             val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
             val params = call.receive<MapsMigrateRequestParams>()
 
-            val catalogController = MapsController(call)
-            catalogController.migrate(userId, params)
+            mapsController.migrate(userId, params)
         }
     }
     authenticateRouting {
         post("/maps/add-map") {
-            val userId = call.principal<UserIdPrincipal>()?.name!!
+            val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
+            val addParams = call.receive<MapsAddRequestParams>()
 
-            val catalogController = MapsController(call)
-            catalogController.addNewMap(userId)
+            val response = mapsController.addNewMap(userId, addParams)
+            response.respond(call)
         }
     }
     authenticateRouting {
         get("/maps/fetch{mapId}") {
-            val userId = call.principal<UserIdPrincipal>()?.name!!
-            val mapId = call.parameters["mapId"]!!
+            val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
+            val mapId = call.parameters["mapId"]!!.toInt()
 
-            val mapsController = MapsController(call)
-            mapsController.fetch(userId, mapId)
+            val response = mapsController.fetch(userId, mapId)
+            response.respond(call)
         }
     }
     authenticateRouting {
         get("/maps/view{mapId}{userId}") {
-            val adminId = call.principal<UserIdPrincipal>()?.name!!
-            val mapId = call.parameters["mapId"]!!
-            val userId = call.parameters["userId"]!!
+            val adminId = call.principal<UserIdPrincipal>()?.name!!.toInt()
+            val mapId = call.parameters["mapId"]!!.toInt()
+            val userId = call.parameters["userId"]!!.toInt()
 
-            val mapsController = MapsController(call)
-            mapsController.fetch(requestUserId = adminId, mapId = mapId, fetchUserId = userId)
+            val response = mapsController.fetch(requestUserId = adminId, mapId = mapId, fetchUserId = userId)
+            response.respond(call)
         }
     }
     authenticateRouting {
         post("/maps/update{mapId}") {
-            val userId = call.principal<UserIdPrincipal>()?.name!!
-            val mapId = call.parameters["mapId"]!!
+            val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
+            val mapId = call.parameters["mapId"]!!.toInt()
+            val updateParams = call.receive<MapsUpdateRequestParams>()
 
-            val mapsEditUpdateController = MapsEditUpdateController(call)
-            mapsEditUpdateController.update(userId, mapId)
+            val response = mapsEditController.update(userId, mapId, updateParams)
+            response.respond(call)
         }
     }
     authenticateRouting {
@@ -69,8 +74,8 @@ fun Application.configureMapsRouting() {
             val mapId = call.parameters["mapId"]!!.toInt()
             val removeType = MapRemoveType.valueOf(call.parameters["type"]!!)
 
-            val mapsController = MapsController(call)
-            mapsController.eraseInteractedMaps(mapId, userId, removeType)
+            val response = mapsController.eraseInteractedMaps(mapId, userId, removeType)
+            response.respond(call)
         }
     }
     authenticateRouting {
@@ -78,8 +83,8 @@ fun Application.configureMapsRouting() {
             val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
             val mapId = call.parameters["mapId"]!!.toInt()
 
-            val mapsController = MapsController(call)
-            mapsController.deleteEditableMap(mapId, userId)
+            val response = mapsController.deleteEditableMap(mapId, userId)
+            response.respond(call)
         }
     }
 }
