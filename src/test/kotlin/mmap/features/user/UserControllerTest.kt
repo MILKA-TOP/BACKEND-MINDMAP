@@ -27,8 +27,6 @@ class UserControllerTest {
         userController = UserController(authRepository)
     }
 
-    // ... existing tests ...
-
     @Test
     fun `testTryRevokeDeviceWhenValidUserAndDeviceIdThenRevokeSession`() {
         val userId = 1
