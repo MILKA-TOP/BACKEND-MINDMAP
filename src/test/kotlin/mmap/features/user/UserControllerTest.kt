@@ -1,7 +1,6 @@
 package mmap.features.user
 
 import io.ktor.http.*
-import io.ktor.server.testing.*
 import io.mockk.*
 import junit.framework.TestCase
 import mmap.database.sessions.SessionDTO
@@ -14,7 +13,10 @@ import mmap.domain.auth.models.response.SessionResponseRemote
 import mmap.extensions.salt
 import org.junit.jupiter.api.Assertions.assertThrows
 import java.util.*
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class UserControllerTest {
 
@@ -253,7 +255,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun `testPerformLoginWhenPasswordIncorrectThenReturnBadRequest`() {
+    fun testPerformLoginWhenPasswordIncorrectThenReturnBadRequest() {
         val enterData = EnterDataReceiveRemote("email@example.com", "password1234")
         val deviceId = "device1"
         val correctPasswordSalt = "correctPasswordSalt".salt()
