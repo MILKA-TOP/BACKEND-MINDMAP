@@ -53,7 +53,6 @@ class AuthRepositoryTest {
         assertThrows<IllegalArgumentException>() {
             authRepository.createTemporarySession(userId, deviceId, email)
         }
-
     }
 
     @Test
