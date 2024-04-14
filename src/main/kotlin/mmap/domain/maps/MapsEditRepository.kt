@@ -17,6 +17,8 @@ import kotlin.coroutines.coroutineContext
 class MapsEditRepository(
     private val mapsDataSource: MapsDataSource
 ) {
+    fun selectAdminId(mapId: Int) = mapsDataSource.selectAdminId(mapId)
+
     suspend fun update(mapId: Int, updatedParams: MapsUpdateRequestParams) {
 
         val scope = CoroutineScope(coroutineContext)
