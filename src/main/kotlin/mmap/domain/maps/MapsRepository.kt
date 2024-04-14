@@ -8,7 +8,6 @@ import mmap.database.maps.CreateMapsDTO
 import mmap.database.maps.Maps
 import mmap.database.maps.SelectMapDTO
 import mmap.database.selectedmaps.SelectedMapDTO
-import mmap.database.selectedmaps.SelectedMaps
 import mmap.domain.maps.models.request.MapRemoveType
 import mmap.domain.maps.models.request.MapsCreateRequestParams
 import mmap.domain.maps.models.request.MapsMigrateRequestParams
@@ -43,11 +42,9 @@ class MapsRepository(
         require(crateParams.title.trim().isEmpty()) { "Incorrect title parameter" }
         require(crateParams.password != null && crateParams.password.trim().length < MapsController.PASSWORD_MIN_SIZE) { "Incorrect password parameter" }
 
-
         val passwordHash = crateParams.password.salt()
         val mapIdRef = crateParams.ref?.toInt()
         val referralId = generateMapsReferralId(userId, crateParams.title)
-
 
         val mapId: Int = if (mapIdRef == null) {
             mapsDataSource.insertMap(
@@ -130,7 +127,6 @@ class MapsRepository(
         )
         return cratedMapId
     }
-
 
     fun selectNewMap(mapId: Int, userId: Int) = mapsDataSource.selectNewMap(mapId, userId)
     private fun generateMapsReferralId(adminId: Int, title: String) =
@@ -240,6 +236,4 @@ class MapsRepository(
     fun deleteEditableMap(mapId: Int) {
         mapsDataSource.deleteEditableMap(mapId)
     }
-
-
 }

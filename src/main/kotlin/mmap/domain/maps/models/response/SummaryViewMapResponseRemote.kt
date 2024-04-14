@@ -16,7 +16,7 @@ data class SummaryViewMapResponseRemote(
     val admin: UserResponseRemote,
     val nodes: List<NodesViewResponseRemote>,
     val type: MapActionType,
-): SummaryMapResponseRemote
+) : SummaryMapResponseRemote
 
 @Serializable
 data class NodesViewResponseRemote(

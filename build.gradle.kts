@@ -53,6 +53,8 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
 }
 
 detekt {
@@ -68,4 +70,11 @@ val detektAutoCorrect by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::c
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.5")
+}
+dependencies {
+    testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+//    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.22")
+    testImplementation("io.mockk:mockk:1.12.3") // Ensure you have the latest version
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }

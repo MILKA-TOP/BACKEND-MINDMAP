@@ -87,5 +87,4 @@ class MigrateDataSource {
     }
 
     private fun String.startCountWhitespaces(): Int = this.takeWhile { it.isWhitespace() }.length
-
 }

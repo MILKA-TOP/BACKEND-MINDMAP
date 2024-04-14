@@ -19,5 +19,4 @@ class MapsEditUpdateController(
 
         return ApiResponse()
     }
-
 }

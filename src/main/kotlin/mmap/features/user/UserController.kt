@@ -5,7 +5,6 @@ import io.ktor.server.auth.*
 import mmap.core.ApiResponse
 import mmap.database.sessions.SessionDTO
 import mmap.database.sessions.Sessions
-import mmap.database.users.Users
 import mmap.domain.auth.AuthRepository
 import mmap.domain.auth.models.request.EnterDataReceiveRemote
 import mmap.domain.auth.models.request.RegistryReceiveRemote
@@ -45,7 +44,7 @@ class UserController(
     }
 
     fun tryRevokeDevice(userId: Int, deviceId: String) {
-        val userDTO = runCatching { Users.selectById(userId) }.getOrNull()
+        val userDTO = runCatching { authRepository.selectUserById(userId) }.getOrNull()
         if (userDTO != null) {
             val sessionDTO = authRepository.getSessionByUserIdAndDeviceId(userId, deviceId)
             requireNotNull(sessionDTO) { "Unknown session with this device" }
@@ -67,10 +66,10 @@ class UserController(
     }
 
     fun performLogin(enterData: EnterDataReceiveRemote, deviceId: String): ApiResponse<SessionResponseRemote> {
-        val userDTO = Users.fetchUser(enterData.email)
+        val userDTO = authRepository.fetchUserByEmail(enterData.email)
             ?: return ApiResponse(statusCode = HttpStatusCode.BadRequest, errorMessage = "User not found")
 
-        val inputPasswordSalt = userDTO.password.salt()
+        val inputPasswordSalt = enterData.password.salt()
         if (userDTO.password != inputPasswordSalt) {
             return ApiResponse(statusCode = HttpStatusCode.BadRequest, errorMessage = "Invalid password")
         }
