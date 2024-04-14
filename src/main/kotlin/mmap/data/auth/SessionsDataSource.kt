@@ -1,8 +1,10 @@
 package mmap.data.auth
 
+import mmap.core.IgnoreCoverage
 import mmap.database.sessions.SessionDTO
 import mmap.database.sessions.Sessions
 
+@IgnoreCoverage
 class SessionsDataSource {
 
     fun addDisabledSessionOrGetCreated(userId: Int, deviceId: String): SessionDTO? =

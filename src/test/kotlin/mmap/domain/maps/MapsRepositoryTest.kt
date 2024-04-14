@@ -76,7 +76,6 @@ class MapsRepositoryTest {
     }
 
     @Test
-
     fun `createNewMap creates a new map successfully by ref and error incorrectRef`() {
         val userId = 1
         val createParams = MapsCreateRequestParams(

@@ -45,7 +45,6 @@ class TestsRepositoryTempTest {
         every { options } returns listOf("correct", "bad")
     }
 
-
     private val nodeDTO: NodesDTO = mockk(relaxed = true) {
         every { id } returns nodeId
         every { description } returns "here is some link: https://github.com"
@@ -54,7 +53,6 @@ class TestsRepositoryTempTest {
         every { id } returns nodeId
         every { description } returns ""
     }
-
 
     private val mapDto: SummaryEditSelectMapDTO = mockk(relaxed = true) {
         every { id } returns mapId
@@ -130,9 +128,7 @@ class TestsRepositoryTempTest {
         assertNull(actualFetchId)
     }
 
-
     // generate
-
 
     @Test
     fun testGenerateTestWhenUserHasNoAccessThenThrowException() = testApplication {
@@ -418,6 +414,4 @@ class TestsRepositoryTempTest {
 
         assertEquals("Some questions sended without answer", exception.message)
     }
-
-
 }

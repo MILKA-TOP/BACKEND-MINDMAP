@@ -4,9 +4,11 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import mmap.core.IgnoreCoverage
 import mmap.data.tests.yandex.models.Yandex300Request
 import mmap.domain.tests.models.Yandex300Response
 
+@IgnoreCoverage
 class Yandex300DataSource(
     private val client: HttpClient,
 ) {

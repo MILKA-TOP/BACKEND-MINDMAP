@@ -5,7 +5,6 @@ import mmap.data.maps.MapsDataSource
 import mmap.data.maps.NodesDataSource
 import mmap.data.tests.opexams.OpexamsDataSource
 import mmap.data.tests.yandex.Yandex300DataSource
-import mmap.database.answerprogress.AnswerProgress
 import mmap.database.answerprogress.AnswersProgressDTO
 import mmap.database.answers.AnswersDTO
 import mmap.database.extensions.UpdateRowDTO

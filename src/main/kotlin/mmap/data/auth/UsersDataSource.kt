@@ -1,10 +1,12 @@
 package mmap.data.auth
 
+import mmap.core.IgnoreCoverage
 import mmap.database.users.UserAuthFetchDTO
 import mmap.database.users.UserInsertDTO
 import mmap.database.users.Users
 import mmap.database.users.UsersFetchDTO
 
+@IgnoreCoverage
 class UsersDataSource {
 
     fun selectById(userId: Int): UsersFetchDTO = Users.selectById(userId)

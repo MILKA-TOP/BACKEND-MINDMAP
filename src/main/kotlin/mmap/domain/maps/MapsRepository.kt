@@ -5,7 +5,6 @@ import mmap.data.maps.MapsDataSource
 import mmap.data.migrate.MigrateDataSource
 import mmap.database.extensions.UpdateRowDTO
 import mmap.database.maps.CreateMapsDTO
-import mmap.database.maps.Maps
 import mmap.database.maps.SelectMapDTO
 import mmap.database.selectedmaps.SelectedMapDTO
 import mmap.domain.maps.models.request.MapRemoveType

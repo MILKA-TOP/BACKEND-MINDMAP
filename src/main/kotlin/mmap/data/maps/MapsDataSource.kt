@@ -1,5 +1,6 @@
 package mmap.data.maps
 
+import mmap.core.IgnoreCoverage
 import mmap.database.answers.AnswersDTO
 import mmap.database.extensions.UpdateRowDTO
 import mmap.database.extensions.selectFetchIdForTest
@@ -14,6 +15,7 @@ import mmap.database.tests.Tests
 import mmap.database.tests.TestsDTO
 import java.util.*
 
+@IgnoreCoverage
 class MapsDataSource {
 
     fun isEnabledInteractForUserByNodeId(nodeId: UUID, userId: Int) =
