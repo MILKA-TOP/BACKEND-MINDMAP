@@ -2,6 +2,7 @@ package mmap.domain.tests
 
 import mmap.core.buildTestResultViewResponse
 import mmap.data.maps.MapsDataSource
+import mmap.data.maps.NodesDataSource
 import mmap.data.tests.opexams.OpexamsDataSource
 import mmap.data.tests.yandex.Yandex300DataSource
 import mmap.database.answerprogress.AnswerProgress
@@ -26,14 +27,15 @@ class TestsRepository(
     private val mapsDataSource: MapsDataSource,
     private val yandex300DataSource: Yandex300DataSource,
     private val opexamsDataSource: OpexamsDataSource,
+    private val nodesDataSource: NodesDataSource,
 ) {
     private val linkRegex =
         Regex("(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])")
 
-    fun isEnabledInteractForUserByTestId(testId: UUID, userId: Int) =
+    fun isEnabledInteractForUserByTestId(testId: UUID, userId: Int): Boolean =
         mapsDataSource.isEnabledInteractForUserByTestId(testId, userId)
 
-    fun selectFetchIdForTest(testId: UUID, userId: Int) = mapsDataSource.selectMapFetchIdForTest(testId, userId)
+    fun selectFetchIdForTest(testId: UUID, userId: Int): UUID? = mapsDataSource.selectMapFetchIdForTest(testId, userId)
     fun completeTest(
         userId: Int,
         testId: UUID,
@@ -65,7 +67,8 @@ class TestsRepository(
                 fetchId = stampedTest.fetchId,
             )
         }
-        AnswerProgress.addAnswers(answerProgressDTOs)
+
+        nodesDataSource.sendAnswersForTest(answerProgressDTOs)
 
         val testResultViewModel = buildTestResultViewResponse(
             selectedAnswers = stampedAnswersIds,
@@ -141,7 +144,7 @@ class TestsRepository(
     }
 
     private suspend fun generate(testId: UUID, description: String): QuestionGeneratedModel {
-        val questions = opexamsDataSource.getSummarization(description).orEmpty()
+        val questions = opexamsDataSource.getSummarization(description)
         val questionsDto = mutableListOf<QuestionsDTO>()
         val answersDto = mutableListOf<AnswersDTO>()
 

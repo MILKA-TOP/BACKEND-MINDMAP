@@ -35,14 +35,15 @@ class MapsRepository(
     private val migrateDataSource: MigrateDataSource,
 ) {
 
-    fun isEnabledInteractForUserByMapId(mapId: Int, userId: Int) =
+    fun isEnabledInteractForUserByMapId(mapId: Int, userId: Int): Boolean =
         mapsDataSource.isEnabledInteractForUserByMapId(mapId, userId)
 
     fun createNewMap(userId: Int, crateParams: MapsCreateRequestParams): Int {
-        require(crateParams.title.trim().isEmpty()) { "Incorrect title parameter" }
-        require(crateParams.password != null && crateParams.password.trim().length < MapsController.PASSWORD_MIN_SIZE) { "Incorrect password parameter" }
+        require(crateParams.title.trim().isNotEmpty()) { "Incorrect title parameter" }
+        val password = crateParams.password
+        require(password != null && password.trim().length >= MapsController.PASSWORD_MIN_SIZE || password == null) { "Incorrect password parameter" }
 
-        val passwordHash = crateParams.password.salt()
+        val passwordHash = crateParams.password?.salt()
         val mapIdRef = crateParams.ref?.toInt()
         val referralId = generateMapsReferralId(userId, crateParams.title)
 
@@ -60,7 +61,7 @@ class MapsRepository(
             val checkEnabledMapForUser = mapsDataSource.isEnabledInteractForUserByMapId(mapIdRef, userId)
             require(checkEnabledMapForUser) { "Enabled copy map only for user, who save this map to catalog" }
 
-            val savedMapDTO = Maps.fetchEditSummary(mapIdRef)
+            val savedMapDTO = mapsDataSource.fetchEditSummary(mapIdRef)
 
             val nodesMapIds = savedMapDTO.nodes.associate { it.id to UUID.randomUUID() }
             val testsMapIds = savedMapDTO.tests.associate { it.id to UUID.randomUUID() }
@@ -107,10 +108,10 @@ class MapsRepository(
     fun migrate(userId: Int, params: MapsMigrateRequestParams): Int {
         val password = params.password
         require(
-            password != null && params.password.trim().length < MapsController.PASSWORD_MIN_SIZE || password == null
+            password != null && password.trim().length >= MapsController.PASSWORD_MIN_SIZE || password == null
         ) { "Incorrect password parameter" }
 
-        val passwordHash = params.password?.salt()
+        val passwordHash = password?.salt()
 
         val mapsDTO = migrateDataSource.migrateOtherMindMap(params.text, params.type)
         val referralId = generateMapsReferralId(userId, mapsDTO.title)
@@ -128,11 +129,11 @@ class MapsRepository(
         return cratedMapId
     }
 
-    fun selectNewMap(mapId: Int, userId: Int) = mapsDataSource.selectNewMap(mapId, userId)
+    fun insertSelectionNewMap(mapId: Int, userId: Int) = mapsDataSource.insertSelectionNewMap(mapId, userId)
     private fun generateMapsReferralId(adminId: Int, title: String) =
         "$adminId-$title-${LocalTime.now()}".md5().slice(0 until MapsController.REFERRAL_ID_SIZE)
 
-    fun selectMapPreview(mapId: Int): SelectMapDTO = Maps.select(mapId)
+    fun selectMapPreview(mapId: Int): SelectMapDTO = mapsDataSource.selectPreview(mapId)
     fun fetch(requestUserId: Int, mapId: Int, fetchUserId: Int): SummaryMapResponseRemote? {
         val selectedMaps = mapsDataSource.selectByUser(requestUserId)
         val map = selectedMaps.firstOrNull { it.id == mapId }

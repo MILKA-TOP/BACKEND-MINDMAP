@@ -30,7 +30,7 @@ enum class YandexResponseStatus {
     error, success
 }
 
-internal object Yandex300ResponseSerializer :
+object Yandex300ResponseSerializer :
     JsonContentPolymorphicSerializer<Yandex300Response>(Yandex300Response::class),
     KSerializer<Yandex300Response> {
 

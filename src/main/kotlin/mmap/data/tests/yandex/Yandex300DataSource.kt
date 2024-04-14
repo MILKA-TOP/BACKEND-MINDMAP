@@ -11,7 +11,7 @@ class Yandex300DataSource(
     private val client: HttpClient,
 ) {
 
-    suspend fun getSummarization(link: String) = client.post(
+    suspend fun getSummarization(link: String): Yandex300Response = client.post(
         urlString = "https://300.ya.ru/api/sharing-url",
     ) {
         contentType(ContentType.Application.Json)

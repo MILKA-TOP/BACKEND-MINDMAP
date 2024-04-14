@@ -71,9 +71,11 @@ class MapsDataSource {
         answers = answers,
     )
 
-    fun selectNewMap(mapId: Int, userId: Int) {
+    fun insertSelectionNewMap(mapId: Int, userId: Int) {
         SelectedMaps.insert(userId, mapId)
     }
+
+    fun selectPreview(mapId: Int) = Maps.select(mapId)
 
     fun fetchViewSummary(mapIdInt: Int, userIdInt: Int, markAsFetchedForUser: Boolean): SummaryViewSelectMapDTO =
         Maps.fetchViewSummary(mapIdInt, userIdInt, markAsFetchedForUser)

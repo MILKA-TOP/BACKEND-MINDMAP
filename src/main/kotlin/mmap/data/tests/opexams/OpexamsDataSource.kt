@@ -4,16 +4,13 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import mmap.domain.tests.models.opexams.OpexamsQuestionData
-import mmap.domain.tests.models.opexams.OpexamsQuestionsType
-import mmap.domain.tests.models.opexams.OpexamsRequestModel
-import mmap.domain.tests.models.opexams.OpexamsRequestType
+import mmap.domain.tests.models.opexams.*
 
 class OpexamsDataSource(
     private val client: HttpClient,
 ) {
 
-    suspend fun getSummarization(description: String) = client.post(
+    suspend fun getSummarization(description: String): List<OpexamsQuestion> = client.post(
         urlString = "https://api.opexams.com/questions-generator"
     ) {
         contentType(ContentType.Application.Json)

@@ -17,13 +17,13 @@ fun buildTestResultViewResponse(
         .map { it.toResultDomainModel(it.id in selectedAnswers) }
         .groupBy { it.questionId }
 
-    val stampedQuestions =
+    val stampedQuestionsModels =
         stampedQuestions.map {
             it.toResultDomainModel(stampedAnswersModels[it.id.toString()]!!)
         }.groupBy { it.testId }
 
     return testsIds.mapNotNull { testId ->
-        stampedQuestions[testId.toString()]?.let { questions ->
+        stampedQuestionsModels[testId.toString()]?.let { questions ->
             val passedQuestionsCount = questions.count { question ->
                 question.answers.all { it.isCorrect == it.isSelected }
             }

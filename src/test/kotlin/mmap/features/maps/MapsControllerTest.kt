@@ -190,6 +190,7 @@ class MapsControllerTest {
         assertEquals(AccessDenied, response.statusCode)
         assertEquals("You doesn't contains this map in your catalog", response.errorMessage)
     }
+
     @Test
     fun `fetch success without fetchUserId`() {
         val summaryMapResponse = mockk<SummaryEditMapResponseRemote>(relaxed = false) {

@@ -1,9 +1,6 @@
 package mmap.features.maps
 
 import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
 import mmap.core.ApiResponse
 import mmap.domain.maps.MapsRepository
 import mmap.domain.maps.models.request.MapRemoveType
@@ -13,7 +10,6 @@ import mmap.domain.maps.models.request.MapsMigrateRequestParams
 import mmap.domain.maps.models.response.*
 import mmap.extensions.AccessDenied
 import mmap.extensions.salt
-import java.util.*
 
 class MapsController(private val mapsRepository: MapsRepository) {
 
@@ -37,7 +33,7 @@ class MapsController(private val mapsRepository: MapsRepository) {
             if (addParams.password != null) {
                 return ApiResponse(HttpStatusCode.BadRequest, errorMessage = "Incorrect password parameter")
             } else {
-                mapsRepository.selectNewMap(mapId, userId)
+                mapsRepository.insertSelectionNewMap(mapId, userId)
                 return ApiResponse()
             }
         } else {
@@ -45,7 +41,7 @@ class MapsController(private val mapsRepository: MapsRepository) {
             if (inputPassword != map.passwordHash) {
                 return ApiResponse(HttpStatusCode.BadRequest, errorMessage = "Incorrect password parameter")
             } else {
-                mapsRepository.selectNewMap(mapId, userId)
+                mapsRepository.insertSelectionNewMap(mapId, userId)
                 return ApiResponse()
             }
         }

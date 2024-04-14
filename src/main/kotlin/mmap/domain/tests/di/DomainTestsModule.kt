@@ -11,6 +11,7 @@ val domainTestsModule = module {
             mapsDataSource = get(),
             yandex300DataSource = get(),
             opexamsDataSource = get(),
+            nodesDataSource = get(),
         )
     }
 }
