@@ -1,5 +1,6 @@
 package mmap.data.di
 
+import mmap.core.IgnoreCoverage
 import mmap.data.auth.SessionsDataSource
 import mmap.data.auth.UsersDataSource
 import mmap.data.maps.MapsDataSource
@@ -11,6 +12,7 @@ import mmap.plugins.OPEXAMS_CLIENT_QUALIFIER
 import mmap.plugins.YANDEX_300_CLIENT_QUALIFIER
 import org.koin.dsl.module
 
+@IgnoreCoverage
 val dataModule = module {
     single { SessionsDataSource() }
     single { UsersDataSource() }

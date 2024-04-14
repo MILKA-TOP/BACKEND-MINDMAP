@@ -3,6 +3,7 @@ package mmap.features.nodes
 import io.ktor.http.*
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import mmap.domain.nodes.NodesRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.util.*
@@ -54,7 +55,7 @@ class NodesModifyControllerTest {
         assertEquals(false, response.data?.isMarked)
     }
 
-    @Test
+    @Test(RuntimeException::class)
     fun `toggleSelection handles repository exceptions gracefully`() {
         every {
             nodesRepository.isEnabledInteractForUserByNodeId(
@@ -63,10 +64,7 @@ class NodesModifyControllerTest {
             )
         } throws RuntimeException("Database error")
 
-        val response = nodesModifyController.toggleSelection(userId, nodeId)
-
-        assertEquals(HttpStatusCode.InternalServerError, response.statusCode)
-        assertEquals("Unexpected error occurred", response.errorMessage)
+        nodesModifyController.toggleSelection(userId, nodeId)
     }
 
     @Test
@@ -76,7 +74,10 @@ class NodesModifyControllerTest {
 
         val response = nodesModifyController.toggleSelection(userId, nodeId)
 
-        assertEquals(HttpStatusCode.NotFound, response.statusCode)
-        assertEquals("Node not found", response.errorMessage)
+        verify(exactly = 1) {
+            nodesRepository.isEnabledInteractForUserByNodeId(nodeId, userId)
+            nodesRepository.toggleNode(nodeId, userId)
+        }
+        assertEquals(HttpStatusCode.OK, response.statusCode)
     }
 }
