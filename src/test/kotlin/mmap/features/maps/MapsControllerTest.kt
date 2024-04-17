@@ -11,7 +11,6 @@ import mmap.domain.maps.models.response.SummaryEditMapResponseRemote
 import mmap.extensions.AccessDenied
 import mmap.extensions.salt
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.anyInt
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -35,9 +34,9 @@ class MapsControllerTest {
     @Test
     fun testCreateNewMapWhenCalledThenReturnsCorrectMapIdResponseRemote() {
         // Arrange
-        val userId = anyInt()
+        val userId = 1
         val crateParams = mockk<MapsCreateRequestParams>()
-        val expectedMapId = anyInt()
+        val expectedMapId = 42
         every({ mapsRepository.createNewMap(userId, crateParams) }).returns(expectedMapId)
 
         // Act
