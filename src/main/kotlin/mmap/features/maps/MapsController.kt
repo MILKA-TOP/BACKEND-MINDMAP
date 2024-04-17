@@ -51,7 +51,7 @@ class MapsController(private val mapsRepository: MapsRepository) {
         requestUserId: Int,
         mapId: Int,
         fetchUserId: Int = requestUserId
-    ): ApiResponse<SummaryMapResponseRemote> {
+    ): ApiResponse<Any> {
         val selectedMap = mapsRepository.fetch(requestUserId, mapId, fetchUserId)
         return selectedMap?.let { ApiResponse(data = it) } ?: ApiResponse(
             AccessDenied,

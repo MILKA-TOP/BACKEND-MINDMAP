@@ -11,20 +11,20 @@ import org.jetbrains.exposed.sql.json.jsonb
 import java.time.Instant
 import java.util.*
 
-enum class QuestionEventType { CREATE, UPDATE, REMOVE }
+enum class QuestionStateType { CREATE, UPDATE, REMOVE }
 
-object QuestionEvents : UUIDTable(columnName = "event_id") {
+object QuestionStates : UUIDTable(columnName = "state_id") {
     val questionId = uuid("question_id").references(Questions.id)
-    val eventType =
-        defaultCustomEnumeration("event_type", "QuestionEventType") { QuestionEventType.valueOf(it as String) }
-    val eventData = jsonb<QuestionEventJson>("event_data", JSONB_FORMAT)
+    val stateType =
+        defaultCustomEnumeration("state_type", "QuestionStateType") { QuestionStateType.valueOf(it as String) }
+    val stateData = jsonb<QuestionsStateJson>("state_data", JSONB_FORMAT)
     val createdAt = timestamp("created_at")
 
     fun batchInsertCreateEventsStatement(events: List<QuestionsDTO>) {
         batchInsert(events) { question ->
             this[questionId] = question.id
-            this[eventType] = QuestionEventType.CREATE
-            this[eventData] = QuestionEventJson.Insert(
+            this[stateType] = QuestionStateType.CREATE
+            this[stateData] = QuestionsStateJson.Insert(
                 text = question.questionText,
                 type = question.type,
             )
@@ -35,8 +35,8 @@ object QuestionEvents : UUIDTable(columnName = "event_id") {
     fun batchInsertUpdateEventsStatement(update: List<QuestionsDTO>) {
         batchInsert(update) { question ->
             this[questionId] = question.id
-            this[eventType] = QuestionEventType.UPDATE
-            this[eventData] = QuestionEventJson.Update(
+            this[stateType] = QuestionStateType.UPDATE
+            this[stateData] = QuestionsStateJson.Update(
                 text = question.questionText,
                 type = question.type,
             )
@@ -47,8 +47,8 @@ object QuestionEvents : UUIDTable(columnName = "event_id") {
     fun batchInsertRemoveEventsStatement(remove: List<UUID>) {
         batchInsert(remove) { id ->
             this[questionId] = id
-            this[eventType] = QuestionEventType.REMOVE
-            this[eventData] = QuestionEventJson.Remove
+            this[stateType] = QuestionStateType.REMOVE
+            this[stateData] = QuestionsStateJson.Remove
             this[createdAt] = Instant.now()
         }
     }

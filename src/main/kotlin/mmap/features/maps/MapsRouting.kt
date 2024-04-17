@@ -1,8 +1,10 @@
 package mmap.features.maps
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import mmap.core.ApiResponse.Companion.respond
 import mmap.domain.maps.models.request.*
@@ -19,7 +21,8 @@ fun Application.configureMapsRouting() {
             val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
             val createParams = call.receive<MapsCreateRequestParams>()
 
-            mapsController.createNewMap(userId, createParams)
+            val result = mapsController.createNewMap(userId, createParams)
+            call.respond(HttpStatusCode.OK, result)
         }
     }
     authenticateRouting {
@@ -27,7 +30,8 @@ fun Application.configureMapsRouting() {
             val userId = call.principal<UserIdPrincipal>()?.name!!.toInt()
             val params = call.receive<MapsMigrateRequestParams>()
 
-            mapsController.migrate(userId, params)
+            val result = mapsController.migrate(userId, params)
+            call.respond(HttpStatusCode.OK, result)
         }
     }
     authenticateRouting {

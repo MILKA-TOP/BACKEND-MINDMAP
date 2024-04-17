@@ -9,12 +9,14 @@ EXTENSION citext;
 
 
 drop table if exists Users cascade;
-create table Users
+create table if not exists users
 (
-    user_id   serial PRIMARY KEY not NULL,
-    email     citext unique      not NULL,
-    pass_hash varchar(64)        not NULL
-);
+    user_id   serial
+    primary key,
+    email     citext      not null
+    unique,
+    pass_hash varchar(64) not null
+    );
 
 drop table if exists Maps cascade;
 create table Maps
@@ -67,8 +69,8 @@ CREATE TABLE QuestionSnapshot
     is_deleted  bool                                                NOT NULL DEFAULT false
 );
 
-drop type if exists QuestionEventType cascade;
-create type QuestionEventType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
+drop type if exists QuestionStateType cascade;
+create type QuestionStateType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
 
 -- Таблица для хранения событий изменения Question
 drop table if exists QuestionEvents cascade;
@@ -76,8 +78,8 @@ CREATE TABLE QuestionEvents
 (
     event_id    uuid PRIMARY KEY                        NOT NULL DEFAULT gen_random_uuid(),
     question_id uuid REFERENCES Questions (question_id) NOT NULL,
-    event_type  QuestionEventType                       NOT NULL,
-    event_data  jsonb                                   NOT NULL,
+    state_type  QuestionStateType                       NOT NULL,
+    state_data  jsonb                                   NOT NULL,
     created_at  timestamp                               NOT NULL DEFAULT current_timestamp
 );
 
@@ -98,30 +100,18 @@ CREATE TABLE AnswersSnapshot
     is_deleted bool                                            NOT NULL DEFAULT false
 );
 
-drop type if exists AnswerEventType cascade;
-create type AnswerEventType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
+drop type if exists AnswerStateType cascade;
+create type AnswerStateType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
 
 -- Таблица для хранения событий изменения Question
-drop table if exists AnswerEvents cascade;
-CREATE TABLE AnswerEvents
+drop table if exists AnswerStates cascade;
+CREATE TABLE AnswerStates
 (
     event_id   uuid PRIMARY KEY                    NOT NULL DEFAULT gen_random_uuid(),
     answer_id  uuid REFERENCES Answers (answer_id) NOT NULL,
-    event_type AnswerEventType                     NOT NULL,
-    event_data jsonb                               NOT NULL,
+    state_type AnswerStateType                     NOT NULL,
+    state_data jsonb                               NOT NULL,
     created_at timestamp                           NOT NULL DEFAULT current_timestamp
-);
-
--- Таблица для хранения основной информации о Question
-drop table if exists AnswersDenormalizedSnapshot cascade;
-CREATE TABLE AnswersDenormalizedSnapshot
-(
-    answer_id  uuid REFERENCES Answers (answer_id) NOT NULL,
-    version    int                                 not null,
-    text       text                                NOT NULL,
-    is_correct bool                                NOT NULL,
-    is_deleted bool                                NOT NULL DEFAULT false,
-    constraint unique_answer unique (answer_id, version)
 );
 
 drop table if exists Sessions cascade;

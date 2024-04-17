@@ -1,6 +1,7 @@
 package mmap.domain.maps.di
 
 import mmap.core.IgnoreCoverage
+import mmap.domain.maps.MapsEditRepository
 import mmap.domain.maps.MapsRepository
 import mmap.features.maps.MapsEditUpdateController
 import org.koin.dsl.module
@@ -14,8 +15,8 @@ val domainMapsModule = module {
         )
     }
     factory {
-        MapsEditUpdateController(
-            mapsEditRepository = get(),
+        MapsEditRepository(
+            mapsDataSource = get(),
         )
     }
 }

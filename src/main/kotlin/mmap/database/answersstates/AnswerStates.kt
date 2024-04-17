@@ -1,4 +1,4 @@
-package mmap.database.answersevents
+package mmap.database.answersstates
 
 import mmap.database.answers.Answers
 import mmap.database.answers.AnswersDTO
@@ -11,19 +11,19 @@ import org.jetbrains.exposed.sql.json.jsonb
 import java.time.Instant
 import java.util.*
 
-enum class AnswerEventType { CREATE, UPDATE, REMOVE }
+enum class AnswerStateType { CREATE, UPDATE, REMOVE }
 
-object AnswerEvents : UUIDTable(columnName = "event_id") {
+object AnswerStates : UUIDTable(columnName = "state_id") {
     val answerId = uuid("answer_id").references(Answers.id)
-    val eventType = defaultCustomEnumeration("event_type", "AnswerEventType") { AnswerEventType.valueOf(it as String) }
-    val eventData = jsonb<AnswerEventJson>("event_data", JSONB_FORMAT)
+    val stateType = defaultCustomEnumeration("state_type", "AnswerStateType") { AnswerStateType.valueOf(it as String) }
+    val stateData = jsonb<AnswerStateJson>("state_data", JSONB_FORMAT)
     val createdAt = timestamp("created_at")
 
     fun batchInsertCreateEventsStatement(events: List<AnswersDTO>) {
         batchInsert(events) { answer ->
             this[answerId] = answer.id
-            this[eventType] = AnswerEventType.CREATE
-            this[eventData] = AnswerEventJson.Insert(
+            this[stateType] = AnswerStateType.CREATE
+            this[stateData] = AnswerStateJson.Insert(
                 text = answer.answerText,
                 isCorrect = answer.isCorrect,
             )
@@ -34,8 +34,8 @@ object AnswerEvents : UUIDTable(columnName = "event_id") {
     fun batchInsertUpdateEventsStatement(update: List<AnswersDTO>) {
         batchInsert(update) { answer ->
             this[answerId] = answer.id
-            this[eventType] = AnswerEventType.UPDATE
-            this[eventData] = AnswerEventJson.Update(
+            this[stateType] = AnswerStateType.UPDATE
+            this[stateData] = AnswerStateJson.Update(
                 text = answer.answerText,
                 isCorrect = answer.isCorrect,
             )
@@ -46,8 +46,8 @@ object AnswerEvents : UUIDTable(columnName = "event_id") {
     fun batchInsertRemoveEventsStatement(remove: List<UUID>) {
         batchInsert(remove) { id ->
             this[answerId] = id
-            this[eventType] = AnswerEventType.REMOVE
-            this[eventData] = AnswerEventJson.Remove
+            this[stateType] = AnswerStateType.REMOVE
+            this[stateData] = AnswerStateJson.Remove
             this[createdAt] = Instant.now()
         }
     }

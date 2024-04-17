@@ -17,7 +17,7 @@ data class SummaryEditMapResponseRemote(
     val nodes: List<NodesEditResponseRemote>,
     val type: MapActionType = MapActionType.EDIT,
     val accessUsers: List<UserResponseRemote> = emptyList()
-) : SummaryMapResponseRemote
+)
 
 @Serializable
 data class NodesEditResponseRemote(

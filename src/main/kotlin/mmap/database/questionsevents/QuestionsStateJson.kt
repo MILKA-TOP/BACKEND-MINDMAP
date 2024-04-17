@@ -4,19 +4,19 @@ import kotlinx.serialization.Serializable
 import mmap.database.questions.QuestionType
 
 @Serializable
-sealed class QuestionEventJson {
+sealed class QuestionsStateJson {
     @Serializable
-    data object Remove : QuestionEventJson()
+    data object Remove : QuestionsStateJson()
 
     @Serializable
     data class Insert(
         val text: String,
         val type: QuestionType,
-    ) : QuestionEventJson()
+    ) : QuestionsStateJson()
 
     @Serializable
     data class Update(
         val text: String,
         val type: QuestionType,
-    ) : QuestionEventJson()
+    ) : QuestionsStateJson()
 }

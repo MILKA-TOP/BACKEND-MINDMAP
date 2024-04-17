@@ -18,7 +18,6 @@ import mmap.domain.maps.models.response.NodesViewResponseRemote.Companion.toView
 import mmap.domain.maps.models.response.QuestionsEditResponseRemote.Companion.toEditDomainModel
 import mmap.domain.maps.models.response.QuestionsViewResponseRemote.Companion.toViewDomainModel
 import mmap.domain.maps.models.response.SummaryEditMapResponseRemote
-import mmap.domain.maps.models.response.SummaryMapResponseRemote
 import mmap.domain.maps.models.response.SummaryViewMapResponseRemote
 import mmap.domain.maps.models.response.TestsEditResponseRemote.Companion.toEditDomainModel
 import mmap.domain.maps.models.response.TestsViewResponseRemote.Companion.toViewDomainModel
@@ -133,11 +132,11 @@ class MapsRepository(
         "$adminId-$title-${LocalTime.now()}".md5().slice(0 until MapsController.REFERRAL_ID_SIZE)
 
     fun selectMapPreview(mapId: Int): SelectMapDTO = mapsDataSource.selectPreview(mapId)
-    fun fetch(requestUserId: Int, mapId: Int, fetchUserId: Int): SummaryMapResponseRemote? {
+    fun fetch(requestUserId: Int, mapId: Int, fetchUserId: Int): Any? {
         val selectedMaps = mapsDataSource.selectByUser(requestUserId)
         val map = selectedMaps.firstOrNull { it.id == mapId }
         return map?.let { map ->
-            val domainModel: SummaryMapResponseRemote = if (map.admin.id == fetchUserId) {
+            val domainModel: Any = if (map.admin.id == fetchUserId) {
                 fetchEditMap(
                     mapIdInt = mapId,
                     map = map,
