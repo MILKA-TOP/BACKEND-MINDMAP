@@ -9,3 +9,4 @@ data class MapsCreateRequestParams(
     val password: String? = null,
     val ref: String? = null,
 )
+

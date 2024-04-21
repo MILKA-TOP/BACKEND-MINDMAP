@@ -14,6 +14,14 @@ data class MapsUpdateRequestParams(
 )
 
 @Serializable
+data class UpdatedListComponent<T, K>(
+    val insert: List<T> = emptyList(),
+    val removed: List<K> = emptyList(),
+    val updated: List<T> = emptyList(),
+)
+
+
+@Serializable
 data class NodesUpdateParam(
     val nodeId: String,
     val mapId: String,
@@ -45,9 +53,4 @@ data class AnswerUpdateParam(
     val isCorrect: Boolean,
 )
 
-@Serializable
-data class UpdatedListComponent<T, K>(
-    val insert: List<T> = emptyList(),
-    val removed: List<K> = emptyList(),
-    val updated: List<T> = emptyList(),
-)
+

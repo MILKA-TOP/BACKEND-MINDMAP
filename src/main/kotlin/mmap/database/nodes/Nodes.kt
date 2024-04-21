@@ -39,6 +39,7 @@ object Nodes : UUIDTable(columnName = "node_id") {
             this[label] = node.label
             this[description] = node.description
             this[parentNodeId] = node.parentNodeId
+            this[priorityNumber] = node.priorityPosition
         }
 
         nodes.update.map { node ->
@@ -48,6 +49,7 @@ object Nodes : UUIDTable(columnName = "node_id") {
                 it[label] = node.label
                 it[description] = node.description
                 it[parentNodeId] = node.parentNodeId
+                it[priorityNumber] = node.priorityPosition
             }
         }
         update(

@@ -51,7 +51,7 @@ class MigrateDataSource {
                     break
                 } else if (nextIndentLevel == indentLevel + 2) {
                     // Дочерняя вершина
-                    i = parseNode(lines, i, nodeId, currentChildrenCounter)
+                    i = parseNode(lines, i, nodeId, priorityPosition = currentChildrenCounter)
                     currentChildrenCounter++
                 } else if (nextIndentLevel == indentLevel + 1) {
                     // Описание вершины

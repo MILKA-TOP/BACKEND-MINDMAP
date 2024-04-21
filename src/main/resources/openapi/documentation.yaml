@@ -1,14 +1,78 @@
-openapi: "3.0.3"
+openapi: "3.1.0"
 info:
-  title: "Application API"
-  description: "Application API"
+  title: "mmap_mindmap_backend API"
+  description: "mmap_mindmap_backend API"
   version: "1.0.0"
 servers:
-  - url: "http://0.0.0.0:8080"
+- url: "https://mmap_mindmap_backend"
 paths:
+  /user/revoke-device{userId}:
+    post:
+      description: ""
+      parameters:
+      - name: "userId"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /user/enter-auth-data:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnterDataReceiveRemote"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /user/login:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestRemote"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SessionResponseRemote"
+  /user/registry:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistryReceiveRemote"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SessionResponseRemote"
   /:
     get:
-      description: "Hello World!"
+      description: ""
       responses:
         "200":
           description: "OK"
@@ -19,5 +83,63 @@ paths:
               examples:
                 Example#1:
                   value: "Hello World!"
+  /json/kotlinx-serialization:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
 components:
   schemas:
+    EnterDataReceiveRemote:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "email"
+      - "password"
+    LoginRequestRemote:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+        pinToken:
+          type: "string"
+      required:
+      - "userId"
+      - "pinToken"
+    SessionResponseRemote:
+      type: "object"
+      properties:
+        sessionId:
+          type: "string"
+        userId:
+          type: "string"
+        userEmail:
+          type: "string"
+      required:
+      - "sessionId"
+      - "userId"
+      - "userEmail"
+    RegistryReceiveRemote:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "email"
+      - "password"
+    Map:
+      type: "object"
+      properties: {}
+    Map_String:
+      type: "string"
