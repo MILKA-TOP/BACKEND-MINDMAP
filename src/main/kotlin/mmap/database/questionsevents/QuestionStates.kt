@@ -1,13 +1,20 @@
 package mmap.database.questionsevents
 
+import kotlinx.coroutines.selects.select
 import mmap.database.extensions.defaultCustomEnumeration
 import mmap.database.questions.Questions
 import mmap.database.questions.QuestionsDTO
+import mmap.database.questionsevents.QuestionActualState.references
+import mmap.database.questionsevents.QuestionActualState.uuid
 import mmap.extensions.JSONB_FORMAT
+import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.View
 import org.jetbrains.exposed.dao.id.UUIDTable
-import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.javatime.timestamp
 import org.jetbrains.exposed.sql.json.jsonb
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import java.time.Instant
 import java.util.*
 
@@ -52,4 +59,12 @@ object QuestionStates : UUIDTable(columnName = "state_id") {
             this[createdAt] = Instant.now()
         }
     }
+}
+
+object QuestionActualState : UUIDTable(columnName = "state_id") {
+    val questionId = uuid("question_id").references(Questions.id)
+    val stateType =
+        defaultCustomEnumeration("state_type", "QuestionStateType") { QuestionStateType.valueOf(it as String) }
+    val stateData = jsonb<QuestionsStateJson>("state_data", JSONB_FORMAT)
+    val createdAt = timestamp("created_at")
 }

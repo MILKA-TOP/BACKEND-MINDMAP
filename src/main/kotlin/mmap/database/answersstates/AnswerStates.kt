@@ -2,6 +2,7 @@ package mmap.database.answersstates
 
 import mmap.database.answers.Answers
 import mmap.database.answers.AnswersDTO
+import mmap.database.answersstates.AnswerStates.references
 import mmap.database.extensions.defaultCustomEnumeration
 import mmap.extensions.JSONB_FORMAT
 import org.jetbrains.exposed.dao.id.UUIDTable
@@ -51,4 +52,11 @@ object AnswerStates : UUIDTable(columnName = "state_id") {
             this[createdAt] = Instant.now()
         }
     }
+}
+
+object AnswerActualState: UUIDTable(columnName = "state_id") {
+    val answerId = uuid("answer_id").references(Answers.id)
+    val stateType = defaultCustomEnumeration("state_type", "AnswerStateType") { AnswerStateType.valueOf(it as String) }
+    val stateData = jsonb<AnswerStateJson>("state_data", JSONB_FORMAT)
+    val createdAt = timestamp("created_at")
 }

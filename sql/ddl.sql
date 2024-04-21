@@ -42,8 +42,8 @@ create table Nodes
     is_removed     bool                             not NULL default false
 );
 
-drop table if exists Test cascade;
-create table Test
+drop table if exists Tests cascade;
+create table Tests
 (
     test_id uuid PRIMARY KEY                not null,
     node_id uuid references Nodes (node_id) not null
@@ -59,29 +59,48 @@ create table Questions
     test_id     uuid REFERENCES Test (test_id) NOT NULL
 );
 
--- Таблица для хранения основной информации о Question
+-- -- Таблица для хранения основной информации о Question
 drop table if exists QuestionSnapshot cascade;
-CREATE TABLE QuestionSnapshot
-(
-    question_id uuid REFERENCES Questions (question_id) primary key NOT NULL,
-    text        text                                                NOT NULL,
-    type        QuestionType                                        NOT NULL,
-    is_deleted  bool                                                NOT NULL DEFAULT false
-);
+-- CREATE TABLE QuestionSnapshot
+-- (
+--     question_id uuid REFERENCES Questions (question_id) primary key NOT NULL,
+--     text        text                                                NOT NULL,
+--     type        QuestionType                                        NOT NULL,
+--     is_deleted  bool                                                NOT NULL DEFAULT false
+-- );
 
 drop type if exists QuestionStateType cascade;
 create type QuestionStateType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
 
 -- Таблица для хранения событий изменения Question
-drop table if exists QuestionEvents cascade;
-CREATE TABLE QuestionEvents
+drop table if exists QuestionStates cascade;
+CREATE TABLE QuestionStates
 (
-    event_id    uuid PRIMARY KEY                        NOT NULL DEFAULT gen_random_uuid(),
+    state_id    uuid PRIMARY KEY                        NOT NULL DEFAULT gen_random_uuid(),
     question_id uuid REFERENCES Questions (question_id) NOT NULL,
     state_type  QuestionStateType                       NOT NULL,
     state_data  jsonb                                   NOT NULL,
     created_at  timestamp                               NOT NULL DEFAULT current_timestamp
 );
+
+CREATE OR REPLACE VIEW QuestionActualState AS
+SELECT
+    qe.state_id,
+    qe.question_id,
+    qe.state_type,
+    qe.state_data,
+    qe.created_at
+FROM
+    questionstates qe
+        INNER JOIN (
+        SELECT
+            question_id,
+            MAX(created_at) AS latest_event_time
+        FROM
+            questionstates
+        GROUP BY
+            question_id
+    ) latest_qe ON qe.question_id = latest_qe.question_id AND qe.created_at = latest_qe.latest_event_time;
 
 drop table if exists Answers cascade;
 create table Answers
@@ -90,15 +109,15 @@ create table Answers
     question_id uuid REFERENCES Questions (question_id) NOT NULL
 );
 
--- Таблица для хранения основной информации о Question
+-- -- Таблица для хранения основной информации о Question
 drop table if exists AnswersSnapshot cascade;
-CREATE TABLE AnswersSnapshot
-(
-    answer_id  uuid REFERENCES Answers (answer_id) primary key NOT NULL,
-    text       text                                            NOT NULL,
-    is_correct bool                                            NOT NULL,
-    is_deleted bool                                            NOT NULL DEFAULT false
-);
+-- CREATE TABLE AnswersSnapshot
+-- (
+--     answer_id  uuid REFERENCES Answers (answer_id) primary key NOT NULL,
+--     text       text                                            NOT NULL,
+--     is_correct bool                                            NOT NULL,
+--     is_deleted bool                                            NOT NULL DEFAULT false
+-- );
 
 drop type if exists AnswerStateType cascade;
 create type AnswerStateType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
@@ -107,12 +126,33 @@ create type AnswerStateType as ENUM ('CREATE', 'UPDATE', 'REMOVE');
 drop table if exists AnswerStates cascade;
 CREATE TABLE AnswerStates
 (
-    event_id   uuid PRIMARY KEY                    NOT NULL DEFAULT gen_random_uuid(),
+    state_id   uuid PRIMARY KEY                    NOT NULL DEFAULT gen_random_uuid(),
     answer_id  uuid REFERENCES Answers (answer_id) NOT NULL,
     state_type AnswerStateType                     NOT NULL,
     state_data jsonb                               NOT NULL,
     created_at timestamp                           NOT NULL DEFAULT current_timestamp
 );
+
+drop view if exists AnswerActualState;
+CREATE OR REPLACE VIEW AnswerActualState AS
+SELECT
+    ae.state_id,
+    ae.answer_id,
+    ae.state_type,
+    ae.state_data,
+    ae.created_at
+FROM
+    AnswerStates ae
+        INNER JOIN (
+        SELECT
+            answer_id,
+            MAX(created_at) AS latest_event_time
+        FROM
+            AnswerStates
+        GROUP BY
+            answer_id
+    ) latest_ae ON ae.answer_id = latest_ae.answer_id AND ae.created_at = latest_ae.latest_event_time;
+
 
 drop table if exists Sessions cascade;
 create table Sessions
